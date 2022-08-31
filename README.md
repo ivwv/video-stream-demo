@@ -7,4 +7,7 @@
 npm i 
 node app.js
 ```
+**演示**
+
+![](./img//show.gif)
 

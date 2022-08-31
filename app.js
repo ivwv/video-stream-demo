@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 const { stat } = require("fs").promises;
+const port = process.env.PORT || 3000;
 const videoPath = "./video.mp4";
 app.get("/", (req, res) => {
   // res.writeHead(200, { "Content-Type": "text/html" });
@@ -11,21 +12,21 @@ app.get("/video", async (req, res) => {
   // console.log(req.headers);
   // 提取 headers 中的 range
   let range = req.headers.range;
-  console.log("range", range);
+  // console.log("range", range);
   if (range) {
     // 获取 文件相关信息，主要获取文件大小 stat.size()
     let stats = await stat(videoPath);
     // console.log("stats", stats);
     // 匹配 range 中的 `bytes=24281089-` 数值
     let r = range.match(/=(\d+)-(\d+)?/);
-    console.log("r", r);
+    // console.log("r", r);
     // 转化为 10 进制
     let start = parseInt(r[1], 10);
-    console.log("start", start);
+    // console.log("start", start);
     // 表示 切片大小 这里是 1M
     let end = start + 1024 * 1024;
-    console.log("end", end);
-    console.log("stats.size", stats.size);
+    // console.log("end", end);
+    // console.log("stats.size", stats.size);
     // 判断 end 是否超出文件大小
     if (end > stats.size - 1) end = stats.size - 1;
 
@@ -48,6 +49,6 @@ app.get("/video", async (req, res) => {
     fs.createReadStream(videoPath).pipe(res);
   }
 });
-app.listen(3000, () => {
-  console.log("server is running on port 3000");
+app.listen(port, () => {
+  console.log(`http://localhost:${port}`);
 });
