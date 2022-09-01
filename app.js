@@ -44,6 +44,7 @@ app.get("/video", async (req, res) => {
     // HTTP 206 Partial Content 成功状态响应代码表示请求已成功，
     // 并且主体包含所请求的数据区间，该数据区间是在请求的 Range 首部指定的。
     res.writeHead(206, head);
+    // 第二个参数设置切片范围
     fs.createReadStream(videoPath, { start, end }).pipe(res);
   } else {
     fs.createReadStream(videoPath).pipe(res);
